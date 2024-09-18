@@ -31,8 +31,8 @@ if (document.querySelector("#add_link_xoi_lac")) {
 
             // Insert HTML for the two halves
             container.insertAdjacentHTML('beforeend', `
-                <div class="col-3">
-                    <button class="btn btn-danger waves-effect waves-light delete-match" style="display:inline" type="button">Xoá</button>
+                <div class="col-3 ${data_delete_match}">
+                    <button class="btn btn-danger waves-effect waves-light delete-match ${data_delete_match}" style="display:inline" type="button">Xoá</button>
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title mb-0 flex-grow-1" >${team_home} - ${team_away} hiệp 1</h4>
@@ -52,7 +52,7 @@ if (document.querySelector("#add_link_xoi_lac")) {
                 </div>
             `);
 
-            document.querySelector("button.delete-match").addEventListener("click",function (){
+            document.querySelector(`button.${data_delete_match}`).addEventListener("click",function (){
                 this.parentElement.remove();
             })
 
