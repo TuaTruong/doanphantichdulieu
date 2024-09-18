@@ -26,14 +26,16 @@ if (document.querySelector("#add_link_xoi_lac")) {
         fetchData(`/xoilac_analyst?url=${match_url}`, function (data) {
             const table_id_half1 = Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
             const table_id_half2 = Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+            let data_delete_match = Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
             const { team_home, team_away, total_stats_indices } = data;
 
             // Insert HTML for the two halves
             container.insertAdjacentHTML('beforeend', `
                 <div class="col-3">
+                    <button class="btn btn-danger waves-effect waves-light delete-match" style="display:inline" type="button">Xoá</button>
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title mb-0 flex-grow-1">${team_home} - ${team_away} hiệp 1</h4>
+                            <h4 class="card-title mb-0 flex-grow-1" >${team_home} - ${team_away} hiệp 1</h4>
                         </div>
                         <div class="card-body">
                             <div id="${table_id_half1}"></div>
@@ -49,6 +51,10 @@ if (document.querySelector("#add_link_xoi_lac")) {
                     </div>
                 </div>
             `);
+
+            document.querySelector("button.delete-match").addEventListener("click",function (){
+                this.parentElement.remove();
+            })
 
             // Initialize grid configurations
             const initializeTable = (elementId) => new gridjs.Grid({
@@ -94,9 +100,15 @@ if (document.querySelector("#add_link_xoi_lac")) {
             // Update tables every 5 seconds
             const interval = setInterval(function () {
                 fetchData(`/xoilac_analyst?url=${match_url}`, function (response) {
-                    updateTables(response);
+                    try{
+                        updateTables(response);
+                    } catch (e) {
+                        clearInterval(interval);
+                    }
                 });
                 }, 5000);
         });
     });
+
+
 }

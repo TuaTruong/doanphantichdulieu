@@ -41,7 +41,7 @@ class XoiLacController extends Controller
 
             foreach($data_time as $json_data){
                 if($json_data->company_id == 21){
-                    $current_time = $json_data->eu->run[1];
+                    $current_time = $json_data->asia->run[1];
                 }
             }
 
