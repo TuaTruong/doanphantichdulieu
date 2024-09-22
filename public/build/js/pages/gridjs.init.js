@@ -77,11 +77,14 @@ if (document.querySelector("#add_link_xoi_lac")) {
 
             // Function to update the tables
             const updateTables = (response) => {
-                let current_time = parseInt(response.current_time.match(/\d+/g)[0]);
+                let current_time;
+                try{current_time= parseInt(response.current_time.match(/\d+/g)[0]);}catch (e) {
+                    current_time = 45;
+                }
                 document.querySelector(`#${table_id_half1}`).parentElement.parentElement.querySelector("h4").innerText = `${response.team_home} - ${response.team_away} hiệp 1 (Phút thứ ${current_time >= 45 ? 45 : current_time})`
                 document.querySelector(`#${table_id_half2}`).parentElement.parentElement.querySelector("h4").innerText = `${response.team_home} - ${response.team_away} hiệp 2 (Phút thứ ${response.current_time})`
                 let stats = response.statistics;
-                
+                console.log(current_time)
 
                 if(current_time<=45 || document.querySelector(`#${table_id_half1}`).innerHTML.toLowerCase().includes("loading")){
                     tableHalf1.updateConfig({
@@ -118,7 +121,10 @@ if (document.querySelector("#add_link_xoi_lac")) {
                     try{
                         updateTables(response);
                     } catch (e) {
-                        clearInterval(interval);
+                        if(!document.querySelector(`button.${data_delete_match}`)){
+                            clearInterval(interval);
+                        }
+
                     }
                 });
                 }, 5000);

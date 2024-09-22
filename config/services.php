@@ -29,5 +29,11 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
+    'http' => [
+        'proxy' => [
+            'http'  => 'http://root:fTmN6i7T@103.114.104.174:30316',  // For HTTP
+            'https' => 'http://root:fTmN6i7T@103.114.104.174:30316',  // For HTTPS
+        ],
+        'timeout' => 30, // Optional: set a timeout for the request
+    ],
 ];

@@ -24,4 +24,5 @@ Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class,
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
 Route::get("/xoilac",[XoiLacController::class,'index']);
 Route::get("xoilac_analyst",[XoiLacController::class,'analyst']);
+Route::get("/fetch-all",[XoiLacController::class,'fetchAll']);
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');

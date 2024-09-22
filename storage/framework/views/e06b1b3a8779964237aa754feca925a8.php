@@ -19,7 +19,7 @@
     <div id="layout-wrapper">
         <?php echo $__env->make('layouts.topbar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-        <!-- ============================================================== -->
+        <!-- =================================top============================= -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
         <div class="main-content" style="margin: 0px">

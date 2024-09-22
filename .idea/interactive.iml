@@ -20,9 +20,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/filp/whoops" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fruitcake/php-cors" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/graham-campbell/result-type" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/promises" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/uri-template" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/hamcrest/hamcrest-php" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/framework" />
@@ -59,13 +56,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/clock" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/container" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/event-dispatcher" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-client" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-factory" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-message" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/log" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/simple-cache" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psy/psysh" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/ralouphie/getallheaders" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ramsey/collection" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ramsey/uuid" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/cli-parser" />
@@ -121,10 +114,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/webmozart/assert" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/simple-html-dom/simple-html-dom" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/simplehtmldom/simplehtmldom" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/http-client" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/http-client-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/error-solutions" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
