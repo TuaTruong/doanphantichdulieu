@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('matches', function (Blueprint $table) {
+        Schema::create('proxies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('league_id');
-            $table->timestamp("start_time");
-            $table->foreignId('team_home_id');
-            $table->foreignId('team_away_id');
+            $table->string('username');
+            $table->string('password');
+            $table->string('ip');
+            $table->string('port');
+            $table->boolean('is_live')->default(false);
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('matches');
+        Schema::dropIfExists('proxies');
     }
 };

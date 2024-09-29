@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('clubs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('league_id')->constrained('leagues');
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }

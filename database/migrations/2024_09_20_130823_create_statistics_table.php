@@ -16,13 +16,8 @@ return new class extends Migration
             $table->foreignId('club_id');
             $table->foreignId('match_id');
             $table->foreignId('league_id');
-            $table->boolean('is_home');
-            $table->integer('total');
             $table->integer('minute');
-
-
-
-
+            $table->integer('total');
             $table->integer('shots_off_target');
             $table->integer('goals');
             $table->integer('penalty');

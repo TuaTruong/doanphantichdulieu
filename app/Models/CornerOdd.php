@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class CornerOdd extends Model
 {
     use HasFactory;
+    protected $table = 'corner_odd';
+    protected $guarded = [];
 }

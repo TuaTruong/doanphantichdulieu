@@ -43,6 +43,9 @@ require __DIR__.'/../vendor/autoload.php';
 | to this client's browser, allowing them to enjoy our application.
 |
 */
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Request-With');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 

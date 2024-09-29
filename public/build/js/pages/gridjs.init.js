@@ -33,6 +33,7 @@ if (document.querySelector("#add_link_xoi_lac")) {
             container.insertAdjacentHTML('beforeend', `
                 <div class="col-3 ${data_delete_match}">
                     <button class="btn btn-danger waves-effect waves-light delete-match ${data_delete_match}" style="width: 100%" type="button">Xoá</button>
+                    <a href="#" onclick="window.open('${match_url}','_blank');">Link trận đấu</a>
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title mb-0 flex-grow-1" >${team_home} - ${team_away} hiệp 1</h4>
@@ -130,6 +131,4 @@ if (document.querySelector("#add_link_xoi_lac")) {
                 }, 5000);
         });
     });
-
-
 }
