@@ -289,7 +289,7 @@ class XoiLacController extends Controller
                 }
             }
         }
-//        return response()->json(["success" => false]);
+        return response()->json(["success" => false]);
     }
 
     public function matchChart(){
