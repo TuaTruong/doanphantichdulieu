@@ -259,34 +259,51 @@ class XoiLacController extends Controller
 
                             $statistics_response = Http::get("https://v1.api-football.xyz/football/match/{$match_id}/statistics");
                             $statistics_data = json_decode($statistics_response->body())->data[1]->stats;
-                            $statistics = Statistic::updateOrCreate([
-                                "match_id" => $match->id,
-                                "league_id" => $league->id,
-                                "club_id" => $team_home->id,
-                                "minute" => $current_minute,
-                            ],$this->calculateStats($statistics_data[0]));
-                            $statistics = Statistic::updateOrCreate([
-                                "match_id" => $match->id,
-                                "league_id" => $league->id,
-                                "club_id" => $team_away->id,
-                                "minute" => $current_minute,
-                            ],$this->calculateStats($statistics_data[1]));
 
-                            CornerOdd::updateOrCreate([
-                                "match_id" => $match->id,
-                                "league_id" => $league->id,
-                                "minute" => $current_minute
-                            ],[
-                                "half_1_bet_point"=>$firstHalfBet,
-                                "full_time_bet_point"=>$fullTimeBet,
-                            ]);
+                            $statistics_home = Statistic::where("match_id", $match->id)->where("club_id",$team_home->id)->where("minute",$current_minute)->first();
+                            if(!$statistics_home){
+                                Statistic::create([
+                                    "match_id" => $match->id,
+                                    "club_id" => $team_home->id,
+                                    "minute" => $current_minute,
+                                ]+$this->calculateStats($statistics_data[0]));
+                            } else {
+                                $statistics_home->update($statistics_data[0]);
+                            }
+
+                            $statistics_away = Statistic::where("match_id", $match->id)->where("club_id",$team_away->id)->where("minute",$current_minute)->first();
+                            if(!$statistics_away){
+                                Statistic::create([
+                                    "match_id" => $match->id,
+                                    "club_id" => $team_away->id,
+                                    "minute" => $current_minute,
+                                ]+$this->calculateStats($statistics_data[1]));
+                            } else {
+                                $statistics_away->update($statistics_data[1]);
+                            }
+
+                            $corner_odd = CornerOdd::where("minute",$current_minute-1)->where("match_id",$match->id)->first();
+                            if(!$corner_odd){
+                                CornerOdd::create([
+                                    "match_id" => $match->id,
+                                    "minute" => $current_minute,
+                                    "league_id" => $league->id,
+                                    "half_1_bet_point"=>$firstHalfBet,
+                                    "full_time_bet_point"=>$fullTimeBet,
+                                ]);
+                            }else{
+                                $corner_odd->update([
+                                    "half_1_bet_point"=>$firstHalfBet,
+                                    "full_time_bet_point"=>$fullTimeBet,
+                                ]);
+                            }
+
                             return response()->json(["success" => true]);
                         } catch (\Exception $e) {
                             return response()->json(["success" => false,"err"=>$e->getMessage()]);
                         }
                     }
-                } catch (\Exception $e){
-                }
+                } catch (\Exception $e){}
             }
         }
         return response()->json(["success" => false]);
@@ -308,8 +325,9 @@ class XoiLacController extends Controller
     public function testMatchStatistic(Request $request)
     {
         $match = Matches::find(1);
-        $minutes = [];
+        $minutes = $match->statistics()->pluck("minute")->toArray();
+        $total_indices = $match->statistics()->pluck("total")->toArray();
 
-        dd($match->statistics()->distinct()->pluck("minute")->toArray());
+        dd($minutes);
     }
 }
