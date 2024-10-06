@@ -33,4 +33,5 @@ Route::post("/save-data",[XoiLacController::class,'save_data']);
 Route::get('/match-chart', [XoiLacController::class,'matchChart']);
 Route::post("/get-match-statistic",[XoiLacController::class,'getMatchStatistic']);
 Route::get("/test-match-statistic",[XoiLacController::class,'testMatchStatistic']);
+Route::get("/test",[XoiLacController::class,'test_analyst']);
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
