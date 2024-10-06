@@ -46,9 +46,11 @@ class XoiLacController extends Controller
     {
         try {
             $match_url = $request->query('url');
-            $html = new HtmlWeb();
-            $doc = $html->load($match_url);
-            return $doc;
+            $httpClient = HttpClient::create();
+            $ok = $httpClient->request('GET', $match_url);
+
+            $html = new HtmlDocument();
+            $doc = $html->load($ok->getContent());
             // Extract team names and match ID
             $team_home = $doc->find('div.teambox__team-home-name', 0)->plaintext;
             $team_away = $doc->find('div.teambox__team-away-name', 0)->plaintext;
