@@ -17,11 +17,12 @@
 @show
     <!-- Begin page -->
     <div id="layout-wrapper">
-{{--        @include('layouts.sidebar')--}}
+        @include('layouts.topbar')
+        @include('layouts.sidebar')
         <!-- =================================top============================= -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
-        <div class="main-content" style="margin: 0px">
+        <div class="main-content">
             <div class="page-content">
                 <div class="container-fluid">
                     @yield('content')

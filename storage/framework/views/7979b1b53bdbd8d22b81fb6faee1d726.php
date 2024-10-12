@@ -11,6 +11,7 @@
         <?php $__env->endSlot(); ?>
     <?php echo $__env->renderComponent(); ?>
     <div class="row">
+        <?php echo csrf_field(); ?>
         <!-- end col -->
         <div class="col">
             <div class="card">

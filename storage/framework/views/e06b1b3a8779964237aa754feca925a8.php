@@ -17,11 +17,12 @@
 <?php echo $__env->yieldSection(); ?>
     <!-- Begin page -->
     <div id="layout-wrapper">
-
+        <?php echo $__env->make('layouts.topbar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php echo $__env->make('layouts.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         <!-- =================================top============================= -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
-        <div class="main-content" style="margin: 0px">
+        <div class="main-content">
             <div class="page-content">
                 <div class="container-fluid">
                     <?php echo $__env->yieldContent('content'); ?>

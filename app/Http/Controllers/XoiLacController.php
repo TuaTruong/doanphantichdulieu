@@ -5,19 +5,14 @@ use App\Models\Club;
 use App\Models\CornerOdd;
 use App\Models\League;
 use App\Models\Matches;
-use App\Models\Proxy;
 use App\Models\Statistic;
-use App\Traits\ProxyChecker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use simplehtmldom\HtmlDocument;
-use simplehtmldom\HtmlWeb;
 use Symfony\Component\HttpClient\HttpClient;
 use carbon\carbon;
 class XoiLacController extends Controller
 {
-    use ProxyChecker;
     public function index()
     {
         return view("pages.index");
@@ -262,6 +257,117 @@ class XoiLacController extends Controller
         }
     }
 
+    public function test_save_data()
+    {
+        $current_minute = 75;
+        $firstHalfBet = null;
+        $fullTimeBet = 10.0;
+        $team_home_input = "Barracas Central";
+        $team_away_input = "Independiente Rivadavia";
+
+
+        for($i = 0; $i<=2;$i++){
+            $client = HttpClient::create();
+            $response = $client->request("GET", "https://xoilaczvg.tv/sport/football/load-more/home/page/".(string)$i."/per/100")->getContent();
+            $pageSource = json_decode($response)->data->html;
+            $html = new HtmlDocument();
+            $docs = $html->load($pageSource);
+            foreach ($docs->find("div.grid-matches__item") as $card_container) {
+                try {
+                    $league_name = $card_container->find("div.grid-match__league",0)->plaintext;
+                    $team_home_name = $card_container->find("span.grid-match__team--name.grid-match__team--home-name")[0]->plaintext;
+                    $team_away_name = $card_container->find("span.grid-match__team--name.grid-match__team--away-name")[0]->plaintext;
+                    $start_time = $card_container->find("div.grid-match__date")[0]->plaintext;
+                    $start_time_convert = Carbon::createFromFormat('H:i d.m', $start_time)->format('Y-m-d H:i:s');
+                    $match_id = $card_container->getAttribute("data-fid");
+                    $check_teams_name = (strtolower($team_home_name) == strtolower($team_home_input) || strtolower($team_home_name) == strtolower($team_away_input)) || (strtolower($team_away_name) == strtolower($team_away_input) || strtolower($team_away_name) == strtolower($team_home_input));
+
+                    if($check_teams_name){
+                        try {
+                            # Tạo đội bóng và giải đấu, liên kết các dữ liệu với nhau
+                            $league = League::firstOrCreate([
+                                'name'=>$league_name,
+                            ]);
+                            $team_home = Club::firstOrCreate([
+                                "name" => $team_home_name
+                            ]);
+                            $team_away = Club::firstOrCreate([
+                                "name" => $team_away_input
+                            ]);
+                            if (!$team_home->leagues()->where('league_id', $league->id)->exists()) {
+                                $team_home->leagues()->attach($league->id);
+                            }
+                            if (!$team_away->leagues()->where('league_id', $league->id)->exists()) {
+                                $team_away->leagues()->attach($league->id);
+                            }
+                            if (!$league->clubs()->where('club_id', $team_home->id)->exists()) {
+                                $league->clubs()->attach($team_home->id);
+                            }
+                            if (!$league->clubs()->where('club_id', $team_away->id)->exists()) {
+                                $league->clubs()->attach($team_away->id);
+                            }
+
+                            $match = Matches::firstOrCreate([
+                                "league_id" => $league->id,
+                                "start_time" => $start_time_convert,
+                                "team_home_id" => $team_home->id,
+                                "team_away_id" => $team_away->id,
+                            ]);
+
+                            $statistics_response = Http::get("https://v1.api-football.xyz/football/match/{$match_id}/statistics");
+                            $statistics_data = json_decode($statistics_response->body())->data[1]->stats;
+
+                            $statistics_home = Statistic::where("match_id", $match->id)->where("club_id",$team_home->id)->where("minute",$current_minute)->first();
+                            if(!$statistics_home){
+                                Statistic::create([
+                                        "match_id" => $match->id,
+                                        "club_id" => $team_home->id,
+                                        "minute" => $current_minute,
+                                        "league_id" =>$league->id,
+                                    ]+$this->calculateStats($statistics_data[0]));
+                            } else {
+                                $statistics_home->update($statistics_data[0]);
+                            }
+
+                            $statistics_away = Statistic::where("match_id", $match->id)->where("club_id",$team_away->id)->where("minute",$current_minute)->first();
+                            if(!$statistics_away){
+                                Statistic::create([
+                                        "match_id" => $match->id,
+                                        "club_id" => $team_away->id,
+                                        "minute" => $current_minute,
+                                        "league_id" =>$league->id,
+                                    ]+$this->calculateStats($statistics_data[1]));
+                            } else {
+                                $statistics_away->update($statistics_data[1]);
+                            }
+
+                            $corner_odd = CornerOdd::where("minute",$current_minute-1)->where("match_id",$match->id)->first();
+                            if(!$corner_odd){
+                                CornerOdd::create([
+                                    "match_id" => $match->id,
+                                    "minute" => $current_minute,
+                                    "league_id" => $league->id,
+                                    "half_1_bet_point"=>$firstHalfBet,
+                                    "full_time_bet_point"=>$fullTimeBet,
+                                ]);
+                            }else{
+                                $corner_odd->update([
+                                    "half_1_bet_point"=>$firstHalfBet,
+                                    "full_time_bet_point"=>$fullTimeBet,
+                                ]);
+                            }
+
+                            return response()->json(["success" => true]);
+                        } catch (\Exception $e) {
+                            return response()->json(["success" => false,"err"=>$e->getMessage()]);
+                        }
+                    }
+                } catch (\Exception $e){
+                }
+            }
+        }
+        return response()->json(["success" => false]);
+    }
 
     public function save_data(Request $request){
         $current_minute = $request->input("minute");
@@ -275,7 +381,7 @@ class XoiLacController extends Controller
         }
 
         for($i = 0; $i<=2;$i++){
-            $response = Http::get("https://xoilaczvb.tv/sport/football/load-more/home/page/".(string)$i."/per/100");
+            $response = Http::get("https://xoilaczvg.tv/sport/football/load-more/home/page/".(string)$i."/per/100");
             $pageSource = json_decode($response->body())->data->html;
             $html = new HtmlDocument();
             $docs = $html->load($pageSource);
@@ -330,9 +436,8 @@ class XoiLacController extends Controller
                                     "match_id" => $match->id,
                                     "club_id" => $team_home->id,
                                     "minute" => $current_minute,
+                                    "league_id" => $league->id,
                                 ]+$this->calculateStats($statistics_data[0]));
-                            } else {
-                                $statistics_home->update($statistics_data[0]);
                             }
 
                             $statistics_away = Statistic::where("match_id", $match->id)->where("club_id",$team_away->id)->where("minute",$current_minute)->first();
@@ -341,12 +446,11 @@ class XoiLacController extends Controller
                                     "match_id" => $match->id,
                                     "club_id" => $team_away->id,
                                     "minute" => $current_minute,
+                                    "league_id" => $league->id,
                                 ]+$this->calculateStats($statistics_data[1]));
-                            } else {
-                                $statistics_away->update($statistics_data[1]);
                             }
 
-                            $corner_odd = CornerOdd::where("minute",$current_minute-1)->where("match_id",$match->id)->first();
+                            $corner_odd = CornerOdd::where("minute",$current_minute)->where("match_id",$match->id)->first();
                             if(!$corner_odd){
                                 CornerOdd::create([
                                     "match_id" => $match->id,
@@ -355,19 +459,16 @@ class XoiLacController extends Controller
                                     "half_1_bet_point"=>$firstHalfBet,
                                     "full_time_bet_point"=>$fullTimeBet,
                                 ]);
-                            }else{
-                                $corner_odd->update([
-                                    "half_1_bet_point"=>$firstHalfBet,
-                                    "full_time_bet_point"=>$fullTimeBet,
-                                ]);
                             }
 
                             return response()->json(["success" => true]);
                         } catch (\Exception $e) {
-                            return response()->json(["success" => false,"err"=>$e->getMessage()]);
+//                            return response()->json(["success" => false,"err"=>$e->getMessage()]);
                         }
                     }
-                } catch (\Exception $e){}
+                } catch (\Exception $e){
+//                    return response()->json(["success" => false,"err"=>$e->getMessage()]);
+                }
             }
         }
         return response()->json(["success" => false]);
@@ -380,10 +481,35 @@ class XoiLacController extends Controller
 
     public function getMatchStatistic(Request $request)
     {
-        $matchId = $request->input('matchId');
-        $match = Matches::find($matchId);
-        $matchStatistic = $match->statistics();
-        return response()->json($matchStatistic);
+        $match = Matches::find(8);
+        $matchStatistic = $match->statistics;
+        $team_home = Club::find($matchStatistic[0]->club_id);
+        $team_away = Club::find($matchStatistic[1]->club_id);
+        $leagueName = $match->league->name;
+        $minutesArray = $match->statistics()->distinct()->pluck('minute')->toArray();
+        $cornerOddArrayHalf1 = $match->cornerOdd()->pluck('half_1_bet_point')->toArray();
+        $cornerOddArrayFullTime = $match->cornerOdd()->pluck('full_time_bet_point')->toArray();
+        $totalStatisticHome = $match->statistics()->where("club_id",$team_home->id)->pluck('total')->toArray();
+        $totalStatisticAway = $match->statistics()->where("club_id",$team_away->id)->pluck('total')->toArray();
+        for ($i = 0; $i < count($totalStatisticHome); $i++) {
+            $totalStatisticBoth[] = $totalStatisticHome[$i] + $totalStatisticAway[$i];
+        }
+        return response()->json([
+            "team_home" => $team_home->name,
+            "team_away" => $team_away->name,
+            "league_name" => $leagueName,
+            "minutesArray" => $minutesArray,
+            "cornerOddHalf1" => $cornerOddArrayHalf1,
+            "cornerOddArrayFullTime" => $cornerOddArrayFullTime,
+            "totalStatisticHome" => $totalStatisticHome,
+            "totalStatisticAway" => $totalStatisticAway,
+            "totalStatisticBoth" => $totalStatisticBoth,
+        ]);
+    }
+
+    public function allMatches(){
+        $allMatches = Matches::orderBy('start_time')->get();
+        return view('pages.all-matches', compact('allMatches'));
     }
 
     public function testMatchStatistic(Request $request)

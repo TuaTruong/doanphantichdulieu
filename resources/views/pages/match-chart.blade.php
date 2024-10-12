@@ -12,6 +12,7 @@
         @endslot
     @endcomponent
     <div class="row">
+        @csrf
         <!-- end col -->
         <div class="col">
             <div class="card">

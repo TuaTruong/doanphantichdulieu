@@ -13,6 +13,23 @@ class Matches extends Model
     protected $fillable = ['league_id','start_time','team_home_id','team_away_id'];
 
     public function statistics(){
-        return $this->hasMany(Statistic::class, 'match_id');
+        return $this->hasMany(Statistic::class, "match_id",'id');
+    }
+
+    public function cornerOdd()
+    {
+        return $this->hasMany(CornerOdd::class, "match_id",'id');
+    }
+
+    public function league(){
+        return $this->belongsTo(League::class,'league_id','id');
+    }
+
+    public function teamHome(){
+        return $this->hasOne(Club::class,'id','team_home_id');
+    }
+
+    public function teamAway(){
+        return $this->hasOne(Club::class,'id','team_away_id');
     }
 }
