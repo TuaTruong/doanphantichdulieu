@@ -17,6 +17,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title mb-0"><?php echo e($match->teamHome->name); ?> - <?php echo e($match->teamAway->name); ?> Ngày  <?php echo e($match->start_time); ?></h4>
+                    <p class="text-muted"><?php echo e($match->league->name); ?></p>
                 </div>
                 <div class="card-body">
                     <input type="text" class="d-none matchId" value="<?php echo e($match->id); ?>">
