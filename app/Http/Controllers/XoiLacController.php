@@ -102,7 +102,7 @@ class XoiLacController extends Controller
 
     public function test_analyst(){
         try {
-            $match_url = "https://xoilaczz63.live/truc-tiep/chelsea-vs-nottingham-forest-luc-2000-ngay-06-10-2024/";
+            $match_url = "https://xoilaczz.cc//truc-tiep/chelsea-vs-nottingham-forest-luc-2000-ngay-06-10-2024/";
             $html = new HtmlDocument();
             $httpClient = HttpClient::create();
             $ok = $httpClient->request('GET', $match_url);
@@ -218,7 +218,7 @@ class XoiLacController extends Controller
     public function fetchAll(){
         $main_bet_company_id = 21;
         $client = HttpClient::create();
-        $response = $client->request("GET", "https://xoilaczvb.tv/sport/football/load-more/home/page/0/per/100")->getContent();
+        $response = $client->request("GET", "https://xoilaczz.cc/sport/football/load-more/home/page/0/per/100")->getContent();
         $statistics = json_decode($response)->data->html;
         $html = new HtmlDocument();
         $docs = $html->load($statistics);
@@ -381,7 +381,7 @@ class XoiLacController extends Controller
         }
 
         for($i = 0; $i<=2;$i++){
-            $response = Http::get("https://xoilaczvg.tv/sport/football/load-more/home/page/".(string)$i."/per/100");
+            $response = Http::get("https://xoilaczz.cc/sport/football/load-more/home/page/".(string)$i."/per/100");
             $pageSource = json_decode($response->body())->data->html;
             $html = new HtmlDocument();
             $docs = $html->load($pageSource);
