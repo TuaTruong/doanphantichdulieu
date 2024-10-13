@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProxyController;
 use App\Http\Controllers\XoiLacController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -28,8 +27,6 @@ Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class
 Route::get("/xoilac",[XoiLacController::class,'index']);
 Route::get("/xoilac_analyst",[XoiLacController::class,'analyst']);
 Route::get("/fetch-all",[XoiLacController::class,'fetchAll']);
-Route::get("/add-proxy",[ProxyController::class,'addProxy']);
-Route::post("/update-proxy",[ProxyController::class,'updateProxy']);
 Route::post("/save-data",[XoiLacController::class,'save_data']);
 Route::get('/match-chart', [XoiLacController::class,'matchChart']);
 Route::post("/get-match-statistic",[XoiLacController::class,'getMatchStatistic']);
@@ -37,4 +34,5 @@ Route::get("/test-match-statistic",[XoiLacController::class,'testMatchStatistic'
 Route::get("/test",[XoiLacController::class,'test_analyst']);
 Route::get("/test-save-data",[XoiLacController::class,'test_save_data']);
 Route::get("/all-matches",[XoiLacController::class,'allMatches']);
+Route::get("/match-statistic/{matchId}",[XoiLacController::class,'matchStatistic']);
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');

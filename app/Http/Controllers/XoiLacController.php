@@ -463,11 +463,9 @@ class XoiLacController extends Controller
 
                             return response()->json(["success" => true]);
                         } catch (\Exception $e) {
-//                            return response()->json(["success" => false,"err"=>$e->getMessage()]);
                         }
                     }
                 } catch (\Exception $e){
-//                    return response()->json(["success" => false,"err"=>$e->getMessage()]);
                 }
             }
         }
@@ -478,10 +476,15 @@ class XoiLacController extends Controller
         return view('pages.match-chart');
     }
 
+    public function matchStatistic(Request $request, string $matchId){
+        $match = Matches::find($matchId);
+        return view('pages.match-chart',compact('match'));
+    }
 
     public function getMatchStatistic(Request $request)
     {
-        $match = Matches::find(8);
+
+        $match = Matches::find($request->input("matchId"));
         $matchStatistic = $match->statistics;
         $team_home = Club::find($matchStatistic[0]->club_id);
         $team_away = Club::find($matchStatistic[1]->club_id);

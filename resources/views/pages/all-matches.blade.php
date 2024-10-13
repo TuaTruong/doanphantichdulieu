@@ -64,7 +64,6 @@
                             <div class="col-xxl-3 col-md-6">
                                 <div class="card companiesList-card">
                                     <div class="card-body">
-
                                         <div class="text-center">
                                             <a href="/match-statistic/{{$match->id}}">
                                                 <h5 class="mt-3 company-name">{{$match->teamHome->name}} - {{$match->teamAway->name}}</h5>

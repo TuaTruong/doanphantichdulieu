@@ -16,9 +16,10 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title mb-0">Stacked Line Chart</h4>
+                    <h4 class="card-title mb-0"><?php echo e($match->teamHome->name); ?> - <?php echo e($match->teamAway->name); ?> Ngày  <?php echo e($match->start_time); ?></h4>
                 </div>
                 <div class="card-body">
+                    <input type="text" class="d-none matchId" value="<?php echo e($match->id); ?>">
                     <div id="chart-line-stacked"
                          data-colors='["--vz-primary", "--vz-success", "--vz-warning", "--vz-danger", "--vz-info"]'
                          class="e-charts"></div>

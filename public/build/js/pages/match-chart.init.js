@@ -84,7 +84,10 @@ if (chartLineColors) {
 
 fetch('http://127.0.0.1:8001/get-match-statistic',{
     method : "POST",
-    body: JSON.stringify({"matchId":1})
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({"matchId":document.querySelector(".matchId").value})
 }).then(response => {
     if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -92,7 +95,6 @@ fetch('http://127.0.0.1:8001/get-match-statistic',{
     return response.json(); // Read the response as JSON
 })
     .then(data => {
-        console.log(data); // Handle the data you receive
         var chartLineStackedColors = getChartColorsArray("chart-line-stacked");
         if (chartLineStackedColors) {
             var chartDom = document.getElementById('chart-line-stacked');

@@ -17,9 +17,11 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title mb-0">Stacked Line Chart</h4>
+                    <h4 class="card-title mb-0">{{$match->teamHome->name}} - {{$match->teamAway->name}} Ngày  {{$match->start_time}}</h4>
+                    <p class="text"></p>
                 </div>
                 <div class="card-body">
+                    <input type="text" class="d-none matchId" value="{{$match->id}}">
                     <div id="chart-line-stacked"
                          data-colors='["--vz-primary", "--vz-success", "--vz-warning", "--vz-danger", "--vz-info"]'
                          class="e-charts"></div>

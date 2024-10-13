@@ -63,7 +63,6 @@
                             <div class="col-xxl-3 col-md-6">
                                 <div class="card companiesList-card">
                                     <div class="card-body">
-
                                         <div class="text-center">
                                             <a href="/match-statistic/<?php echo e($match->id); ?>">
                                                 <h5 class="mt-3 company-name"><?php echo e($match->teamHome->name); ?> - <?php echo e($match->teamAway->name); ?></h5>
