@@ -19,7 +19,7 @@ Auth::routes();
 Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
 
 Route::get('/', function (){
-    return redirect("/xoilac");
+    return view('welcome');
 })->name('root');
 //Update User Details
 Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
