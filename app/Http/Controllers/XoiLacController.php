@@ -428,7 +428,7 @@ class XoiLacController extends Controller
                             ]);
 
                             $statistics_response = Http::get("https://v1.api-football.xyz/football/match/{$match_id}/statistics");
-                            $statistics_data = json_decode($statistics_response->body())->data[1]->stats;
+                            $statistics_data = json_decode($statistics_response->body())->data[2]->stats;
 
                             $statistics_home = Statistic::where("match_id", $match->id)->where("club_id",$team_home->id)->where("minute",$current_minute)->first();
                             if(!$statistics_home){
@@ -483,7 +483,6 @@ class XoiLacController extends Controller
 
     public function getMatchStatistic(Request $request)
     {
-
         $match = Matches::find($request->input("matchId"));
         $matchStatistic = $match->statistics;
         $team_home = Club::find($matchStatistic[0]->club_id);
