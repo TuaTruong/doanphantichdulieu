@@ -82,7 +82,7 @@ if (chartLineColors) {
     }
 }
 
-fetch('http://127.0.0.1:8001/get-match-statistic',{
+fetch('/get-match-statistic',{
     method : "POST",
     headers: {
         "Content-Type": "application/json"
