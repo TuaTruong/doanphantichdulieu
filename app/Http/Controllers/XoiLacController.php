@@ -489,11 +489,11 @@ class XoiLacController extends Controller
         $team_home = Club::find($matchStatistic[0]->club_id);
         $team_away = Club::find($matchStatistic[1]->club_id);
         $leagueName = $match->league->name;
-        $minutesArray = $match->statistics()->whereRaw('minute % 5 = 0')->distinct()->pluck('minute')->toArray();
-        $cornerOddArrayHalf1 = $match->cornerOdd()->whereRaw('minute % 5 = 0')->pluck('half_1_bet_point')->toArray();
-        $cornerOddArrayFullTime = $match->cornerOdd()->whereRaw('minute % 5 = 0')->pluck('full_time_bet_point')->toArray();
-        $totalStatisticHome = $match->statistics()->where("club_id",$team_home->id)->whereRaw('minute % 5 = 0')->pluck('total')->toArray();
-        $totalStatisticAway = $match->statistics()->where("club_id",$team_away->id)->whereRaw('minute % 5 = 0')->pluck('total')->toArray();
+        $minutesArray = $match->statistics()->distinct()->pluck('minute')->toArray();
+        $cornerOddArrayHalf1 = $match->cornerOdd()->pluck('half_1_bet_point')->toArray();
+        $cornerOddArrayFullTime = $match->cornerOdd()->pluck('full_time_bet_point')->toArray();
+        $totalStatisticHome = $match->statistics()->where("club_id",$team_home->id)->pluck('total')->toArray();
+        $totalStatisticAway = $match->statistics()->where("club_id",$team_away->id)->pluck('total')->toArray();
         for ($i = 0; $i < count($totalStatisticHome); $i++) {
             $totalStatisticBoth[] = $totalStatisticHome[$i] + $totalStatisticAway[$i];
         }
