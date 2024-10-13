@@ -381,7 +381,7 @@ class XoiLacController extends Controller
         }
 
         for($i = 0; $i<=2;$i++){
-            $response = Http::get("https://xoilaczz.cc/sport/football/load-more/home/page/".(string)$i."/per/100");
+            $response = Http::get("https://xoilacz.co/sport/football/load-more/home/page/".(string)$i."/per/100");
             $pageSource = json_decode($response->body())->data->html;
             $html = new HtmlDocument();
             $docs = $html->load($pageSource);
@@ -521,5 +521,12 @@ class XoiLacController extends Controller
         $minutes = $match->statistics()->pluck("minute")->toArray();
         $total_indices = $match->statistics()->pluck("total")->toArray();
         dd($minutes);
+    }
+
+    public function testLink()
+    {
+        $response = Http::get("https://xoilacz.co/sport/football/load-more/home/page/0/per/100");
+        $pageSource = json_decode($response->body())->data->html;
+        dd($pageSource);
     }
 }
