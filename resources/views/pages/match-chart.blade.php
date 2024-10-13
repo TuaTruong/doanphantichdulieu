@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title mb-0">{{$match->teamHome->name}} - {{$match->teamAway->name}} Ngày  {{$match->start_time}}</h4>
-                    <p class="text"></p>
+                    <p class="text-muted">{{$match->league->name}}</p>
                 </div>
                 <div class="card-body">
                     <input type="text" class="d-none matchId" value="{{$match->id}}">
