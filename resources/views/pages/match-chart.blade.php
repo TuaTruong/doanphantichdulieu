@@ -5,10 +5,10 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            Charts
+            Trang chủ
         @endslot
         @slot('title')
-            Echarts
+            Trận đấu
         @endslot
     @endcomponent
     <div class="row">
