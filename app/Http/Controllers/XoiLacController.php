@@ -480,15 +480,17 @@ class XoiLacController extends Controller
     public function getMatchStatistic(Request $request)
     {
         $match = Matches::find($request->input("matchId"));
+        $minuteSplit = $request->input("minuteSplit");
+
         $matchStatistic = $match->statistics;
         $team_home = Club::find($matchStatistic[0]->club_id);
         $team_away = Club::find($matchStatistic[1]->club_id);
         $leagueName = $match->league->name;
-        $minutesArray = $match->statistics()->distinct()->pluck('minute')->toArray();
-        $cornerOddArrayHalf1 = $match->cornerOdd()->pluck('half_1_bet_point')->toArray();
-        $cornerOddArrayFullTime = $match->cornerOdd()->pluck('full_time_bet_point')->toArray();
-        $totalStatisticHome = $match->statistics()->where("club_id",$team_home->id)->pluck('total')->toArray();
-        $totalStatisticAway = $match->statistics()->where("club_id",$team_away->id)->pluck('total')->toArray();
+        $minutesArray = $match->statistics()->whereRaw("minute % {$minuteSplit} = 0")->distinct()->pluck('minute')->toArray();
+        $cornerOddArrayHalf1 = $match->cornerOdd()->whereRaw("minute % {$minuteSplit} = 0")->pluck('half_1_bet_point')->toArray();
+        $cornerOddArrayFullTime = $match->cornerOdd()->whereRaw("minute % {$minuteSplit} = 0")->pluck('full_time_bet_point')->toArray();
+        $totalStatisticHome = $match->statistics()->whereRaw("minute % {$minuteSplit} = 0")->where("club_id",$team_home->id)->pluck('total')->toArray();
+        $totalStatisticAway = $match->statistics()->whereRaw("minute % {$minuteSplit} = 0")->where("club_id",$team_away->id)->pluck('total')->toArray();
         for ($i = 0; $i < count($totalStatisticHome); $i++) {
             $totalStatisticBoth[] = $totalStatisticHome[$i] + $totalStatisticAway[$i];
         }

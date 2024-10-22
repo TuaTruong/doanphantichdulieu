@@ -15,9 +15,17 @@
         <!-- end col -->
         <div class="col">
             <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title mb-0"><?php echo e($match->teamHome->name); ?> - <?php echo e($match->teamAway->name); ?> Ngày  <?php echo e($match->start_time); ?></h4>
-                    <p class="text-muted"><?php echo e($match->league->name); ?></p>
+                <div class="card-header align-items-center d-flex">
+                    <div class="mb-0 flex-grow-1">
+                        <h4 class="card-title mb-0"><?php echo e($match->teamHome->name); ?> - <?php echo e($match->teamAway->name); ?> Ngày  <?php echo e($match->start_time); ?></h4>
+                        <p class="text-muted"><?php echo e($match->league->name); ?></p>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <div class="input-group" >
+                            <input type="text" class="form-control minuteSplit" placeholder="Xem theo phút" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <button class="btn btn-outline-success watch-minute-split" type="button" id="button-addon2">Xem</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <input type="text" class="d-none matchId" value="<?php echo e($match->id); ?>">

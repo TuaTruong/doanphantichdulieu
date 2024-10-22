@@ -6,6 +6,29 @@ Contact: Themesbrand@gmail.com
 File: Echarts Init Js File
 */
 
+function getQueryParam(param) {
+    const urlParams = window.location.search.substring(1);
+    const paramsArray = urlParams.split('&');
+
+    for (let paramPair of paramsArray) {
+        const [key, value] = paramPair.split('=');
+        if (key === param) {
+            return decodeURIComponent(value);
+        }
+    }
+    return null; // Return null if the parameter is not found
+}
+
+document.addEventListener("DOMContentLoaded",function (){
+    document.querySelector('button.watch-minute-split').addEventListener('click',function (){
+        let minute = document.querySelector('input.minuteSplit').value;
+        let url = new URL(window.location.href);
+        url.searchParams.set('minuteSplit', minute);
+        window.location.href = url;
+    })
+})
+
+
 // get colors array from the string
 function getChartColorsArray(chartId) {
     if (document.getElementById(chartId) !== null) {
@@ -81,13 +104,13 @@ if (chartLineColors) {
         option && myChart.setOption(option);
     }
 }
-
+const minuteSplit = getQueryParam('minuteSplit') ?? 1;
 fetch('/get-match-statistic',{
     method : "POST",
     headers: {
         "Content-Type": "application/json"
     },
-    body: JSON.stringify({"matchId":document.querySelector(".matchId").value})
+    body: JSON.stringify({"matchId":document.querySelector(".matchId").value, "minuteSplit": minuteSplit})
 }).then(response => {
     if (!response.ok) {
         throw new Error('Network response was not ok');
