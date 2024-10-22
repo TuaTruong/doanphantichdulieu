@@ -9,14 +9,14 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            Tables
+            Trang chủ
         @endslot
         @slot('title')
             Phân tích chỉ số các trận đấu của xôi lạc
         @endslot
     @endcomponent
     <div class="row">
-        <div class="col-6">
+        <div class="col-md-6">
             <div class="input-group">
                 <input type="text" class="form-control match-url" placeholder="Thêm link xôi lạc" aria-describedby="add_link_xoi_lac">
                 <button class="btn btn-outline-success" type="button" id="add_link_xoi_lac">Thêm link</button>

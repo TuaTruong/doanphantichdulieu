@@ -9,14 +9,14 @@
 <?php $__env->startSection('content'); ?>
     <?php $__env->startComponent('components.breadcrumb'); ?>
         <?php $__env->slot('li_1'); ?>
-            Tables
+            Trang chủ
         <?php $__env->endSlot(); ?>
         <?php $__env->slot('title'); ?>
             Phân tích chỉ số các trận đấu của xôi lạc
         <?php $__env->endSlot(); ?>
     <?php echo $__env->renderComponent(); ?>
     <div class="row">
-        <div class="col-6">
+        <div class="col-md-6">
             <div class="input-group">
                 <input type="text" class="form-control match-url" placeholder="Thêm link xôi lạc" aria-describedby="add_link_xoi_lac">
                 <button class="btn btn-outline-success" type="button" id="add_link_xoi_lac">Thêm link</button>

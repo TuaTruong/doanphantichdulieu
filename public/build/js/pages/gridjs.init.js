@@ -31,7 +31,7 @@ if (document.querySelector("#add_link_xoi_lac")) {
 
             // Insert HTML for the two halves
             container.insertAdjacentHTML('beforeend', `
-                <div class="col-3 ${data_delete_match}">
+                <div class="col-md-3 ${data_delete_match}">
                     <button class="btn btn-danger waves-effect waves-light delete-match ${data_delete_match}" style="width: 100%" type="button">Xoá</button>
                     <a href="#" onclick="window.open('${match_url}','_blank');">Link trận đấu</a>
                     <div class="card">
@@ -85,7 +85,6 @@ if (document.querySelector("#add_link_xoi_lac")) {
                 document.querySelector(`#${table_id_half1}`).parentElement.parentElement.querySelector("h4").innerText = `${response.team_home} - ${response.team_away} hiệp 1 (Phút thứ ${current_time >= 45 ? 45 : current_time})`
                 document.querySelector(`#${table_id_half2}`).parentElement.parentElement.querySelector("h4").innerText = `${response.team_home} - ${response.team_away} hiệp 2 (Phút thứ ${response.current_time})`
                 let stats = response.statistics;
-                console.log(current_time)
 
                 if(current_time<=45 || document.querySelector(`#${table_id_half1}`).innerHTML.toLowerCase().includes("loading")){
                     tableHalf1.updateConfig({
