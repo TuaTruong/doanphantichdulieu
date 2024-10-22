@@ -1,5 +1,6 @@
 <?php $__env->startSection('title'); ?>
-    <?php echo app('translator')->get('translation.echarts'); ?>
+    <?php echo e($match->teamHome->name); ?> - <?php echo e($match->teamAway->name); ?> Ngày  <?php echo e($match->start_time); ?>
+
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <?php $__env->startComponent('components.breadcrumb'); ?>

@@ -508,7 +508,7 @@ class XoiLacController extends Controller
     }
 
     public function allMatches(){
-        $allMatches = Matches::orderBy('start_time')->get();
+        $allMatches = Matches::orderBy('start_time','desc')->get();
         return view('pages.all-matches', compact('allMatches'));
     }
 
