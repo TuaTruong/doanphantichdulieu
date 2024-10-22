@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.echarts')
+    {{$match->teamHome->name}} - {{$match->teamAway->name}} Ngày  {{$match->start_time}}
 @endsection
 @section('content')
     @component('components.breadcrumb')

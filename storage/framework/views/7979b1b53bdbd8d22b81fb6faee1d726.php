@@ -4,10 +4,10 @@
 <?php $__env->startSection('content'); ?>
     <?php $__env->startComponent('components.breadcrumb'); ?>
         <?php $__env->slot('li_1'); ?>
-            Charts
+            Trang chủ
         <?php $__env->endSlot(); ?>
         <?php $__env->slot('title'); ?>
-            Echarts
+            Trận đấu
         <?php $__env->endSlot(); ?>
     <?php echo $__env->renderComponent(); ?>
     <div class="row">
