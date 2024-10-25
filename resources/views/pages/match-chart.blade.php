@@ -30,7 +30,10 @@
                 </div>
                 <div class="card-body">
                     <input type="text" class="d-none matchId" value="{{$match->id}}">
-                    <div id="chart-line-stacked"
+                    <div id="chart-line-indices-statistics"
+                         data-colors='["--vz-primary", "--vz-success", "--vz-warning", "--vz-danger", "--vz-info"]'
+                         class="e-charts"></div>
+                    <div id="chart-line-differences-statistics"
                          data-colors='["--vz-primary", "--vz-success", "--vz-warning", "--vz-danger", "--vz-info"]'
                          class="e-charts"></div>
                 </div>

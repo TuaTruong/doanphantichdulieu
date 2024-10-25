@@ -494,7 +494,14 @@ class XoiLacController extends Controller
         for ($i = 0; $i < count($totalStatisticHome); $i++) {
             $totalStatisticBoth[] = $totalStatisticHome[$i] + $totalStatisticAway[$i];
         }
+
+        $differences = [0];
+        for ($i = 0; $i < count($totalStatisticBoth) - 1; $i++) {
+            $differences[] = $totalStatisticBoth[$i + 1] - $totalStatisticBoth[$i];
+        }
+
         return response()->json([
+            'differences' => $differences,
             "team_home" => $team_home->name,
             "team_away" => $team_away->name,
             "league_name" => $leagueName,

@@ -55,55 +55,6 @@ function getChartColorsArray(chartId) {
 }
 
 //  line chart
-var chartLineColors = getChartColorsArray("chart-line");
-if (chartLineColors) {
-    var chartDom = document.getElementById('chart-line');
-    var myChart = echarts.init(chartDom);
-    var option;
-    option = {
-        grid: {
-            left: '0%',
-            right: '0%',
-            bottom: '0%',
-            top: '4%',
-            containLabel: true
-        },
-        xAxis: {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            axisLine: {
-                lineStyle: {
-                    color: '#858d98'
-                },
-            },
-        },
-        yAxis: {
-            type: 'value',
-            axisLine: {
-                lineStyle: {
-                    color: '#858d98'
-                },
-            },
-            splitLine: {
-                lineStyle: {
-                    color: "rgba(133, 141, 152, 0.1)"
-                }
-            }
-        },
-        series: [{
-            data: [150, 230, 224, 218, 135, 147, 260],
-            type: 'line'
-        }],
-        textStyle: {
-            fontFamily: 'Poppins, sans-serif'
-        },
-        color: chartLineColors
-    };
-
-    if (option && typeof option === "object") {
-        option && myChart.setOption(option);
-    }
-}
 const minuteSplit = getQueryParam('minuteSplit') ?? 1;
 fetch('/get-match-statistic',{
     method : "POST",
@@ -118,9 +69,9 @@ fetch('/get-match-statistic',{
     return response.json(); // Read the response as JSON
 })
     .then(data => {
-        var chartLineStackedColors = getChartColorsArray("chart-line-stacked");
-        if (chartLineStackedColors) {
-            var chartDom = document.getElementById('chart-line-stacked');
+        var chartLineIndicesStatistic = getChartColorsArray("chart-line-indices-statistics");
+        if (chartLineIndicesStatistic) {
+            var chartDom = document.getElementById('chart-line-indices-statistics');
             var myChart = echarts.init(chartDom);
             var option;
 
@@ -205,7 +156,74 @@ fetch('/get-match-statistic',{
                 textStyle: {
                     fontFamily: 'Poppins, sans-serif'
                 },
-                color: chartLineStackedColors
+            };
+
+            option && myChart.setOption(option);
+        }
+
+        var chartLineDiffStatistic = getChartColorsArray("chart-line-differences-statistics");
+        if (chartLineDiffStatistic) {
+            var chartDom = document.getElementById('chart-line-differences-statistics');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            option = {
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine'],
+                    textStyle: { //The style of the legend text
+                        color: '#858d98',
+                    },
+                },
+                grid: {
+                    left: '0%',
+                    right: '0%',
+                    bottom: '0%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                textStyle: {
+                    fontFamily: 'Poppins, sans-serif'
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: data["minutesArray"],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#858d98'
+                        },
+                    },
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#858d98'
+                        },
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: "rgba(133, 141, 152, 0.1)"
+                        }
+                    }
+                },
+                series: [{
+                    name: 'So sánh',
+                    type: 'line',
+                    stack: 'Total',
+                    data: data["differences"],
+                },
+                ],
+                textStyle: {
+                    fontFamily: 'Poppins, sans-serif'
+                },
             };
 
             option && myChart.setOption(option);
